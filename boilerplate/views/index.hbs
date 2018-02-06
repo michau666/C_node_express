@@ -1,0 +1,28 @@
+<h1>{{ title }}</h1>
+<p>Welcome to {{ title }}</p>
+
+<div class="col-md-4">
+<h2>Create user</h2>
+<form action="/users/create" class="well" method="post">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input class="form-control" type="text" name="username">
+    </div>
+    <input class="btn btn-default" type="submit">
+</form>
+</div>
+
+<div class="col-md-6">
+    <h2>Users</h2>
+    {{#each users as |user key|}}
+        <ul></ul>
+        <li><strong>{{ user.username }}</strong>&nbsp;<a class="btn btn-xs btn-warning" href="/users/{{ user.id }}/destroy">delete</a>
+            <ul>
+                <li>Create task<form class="form-inline" action="/users/{{ user.id }}/tasks/create" method="post"><div class="form-group"><input class="input-sm form-control" type="text" name="title"><input class="btn btn-sm btn-default" type="submit"></div></form></li>
+                {{#each user.Tasks as |task key2|}}
+                    <li><strong>{{ task.title }}</strong>&nbsp;<a class="btn btn-xs btn-warning" href="/users/{{ user.id }}//{{ task.id }}/destroy">delete</a></li>
+                {{/each}}
+            </ul>
+        </li>
+    {{/each}}
+</div>
