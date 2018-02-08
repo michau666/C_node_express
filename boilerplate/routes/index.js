@@ -14,4 +14,19 @@ router.get('/', function(req, res) {
   });
 });
 
+router.post('/register', (req, res) => {
+
+  passwordRepeated = req.body.passwordRepeated;
+  
+  models.User.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  }).then(() => {
+    res.render('index', {
+      title: 'Registration complete'
+    });
+  });
+});
+
 module.exports = router;
