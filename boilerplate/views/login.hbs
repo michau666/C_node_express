@@ -1,0 +1,30 @@
+<div class="col-md-4">
+<h1>{{ title }}</h1>
+
+{{#if errors}}
+    {{#each errors}}
+        {{ this.message }}
+    {{/each}}
+{{/if}}
+
+<form method="POST" action="/users/create">
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" name="username" class="form-control" id="username" placeholder="username">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" name="password" class="form-control" id="password" placeholder="password">
+  </div>
+  <div class="form-group">
+    <label for="passwordRepeated">Repeat password</label>
+    <input type="password" name="passwordRepeated" class="form-control" id="passwordRepeated" placeholder="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>

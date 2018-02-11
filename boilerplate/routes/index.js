@@ -1,32 +1,24 @@
-var models  = require('../models');
-var express = require('express');
-var router  = express.Router();
+const models  = require('../models');
+const _ = require('lodash');
+const express = require('express');
+const router  = express.Router();
 
-router.get('/', function(req, res) {
-  models.User.findAll({
-    include: [ models.Task ]
-  }).then(function(users) {
-    res.render('index', {
-      title: 'Sequelize: Express Example',
-      users: users,
-      conditon: true
-    });
+router.get('/', (req, res) => {
+  res.render('index', {
+      title: 'home page',
   });
 });
 
-router.post('/register', (req, res) => {
 
-  passwordRepeated = req.body.passwordRepeated;
-  
-  models.User.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  }).then(() => {
-    res.render('index', {
-      title: 'Registration complete'
-    });
-  });
-});
+// router.get('/', (req, res) => {
+//   models.User.findAll({
+//     include: [ models.Task ]
+//   }).then(function(users) {
+//     res.render('index', {
+//       title: 'Home page',
+//       users: users,
+//     });
+//   });
+// });
 
 module.exports = router;
