@@ -4,9 +4,9 @@ const express = require('express');
 const router  = express.Router();
 const {authenticate} = require('../controllers/middleware/authenticate');
 
-router.get('/report', authenticate, (req, res) => {
-  res.send('Report is temporarily unavailable, but you have access to it :)');
-});
+// router.get('/report', authenticate, (req, res) => {
+//   res.send('Report is temporarily unavailable, but you have access to it :)');
+// });
 
 
 

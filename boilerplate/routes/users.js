@@ -1,33 +1,37 @@
-const models  = require('../models');
-const _ = require('lodash');
 const express = require('express');
-const router  = express.Router();
-const {authenticate} = require('../controllers/middleware/authenticate');
+const router = require('express-promise-router')();
+const passport = require('passport');
+const passportConfig = require('../passport');
 
-/* Registration form */
-router.get('/create', (req, res) => {
-  res.render('login', {
-    title: 'Registration'
-  });
-});
+const { validateBody, schemas } = require('../helpers/routeHelpers');
+const UsersController = require('../controllers/users');
+
+router.route('/signup')
+  .post(validateBody(schemas.authSchema), UsersController.signUp);
+
+router.route('/signin')
+  .post(validateBody(schemas.authSchema), passport.authenticate('local', { session: false }), UsersController.signIn);
+
+router.route('/secret')
+  .get(passport.authenticate('jwt', { session: false }), UsersController.secret);
 
 /* Create new user */
-router.post('/create', (req, res) => {
-  let body = _.pick(req.body, ['username', 'email', 'password']);
-  models.User.create(body)
-    .then((user) => {
-      res.header('x-auth', user.token).render('reports', {
-        title: 'You are logged in!',
-      });
-      // let safeUser = _.pick(user, ['username', 'email']);
-      // res.header('x-auth', user.token).send(safeUser);
-    }).catch((e) => {
-      console.log(JSON.stringify(e));
-      res.render('home', {
-        title: 'Registration error',
-        errors: e.errors
-      });
-    });
-});
+// router.post('/create', (req, res) => {
+//   let body = _.pick(req.body, ['username', 'email', 'password']);
+//   models.User.create(body)
+//     .then((user) => {
+//       res.header('x-auth', user.token).render('reports', {
+//         title: 'You are logged in!',
+//       });
+//       // let safeUser = _.pick(user, ['username', 'email']);
+//       // res.header('x-auth', user.token).send(safeUser);
+//     }).catch((e) => {
+//       console.log(JSON.stringify(e));
+//       res.render('home', {
+//         title: 'Registration error',
+//         errors: e.errors
+//       });
+//     });
+// });
 
 module.exports = router;

@@ -34,7 +34,7 @@ let user = (sequelize, DataTypes) => {
     }
   });
     
-  function hashPassword(password) {
+  hashPassword = (password) => {
     return new Promise ((resolve, reject) => {
       bcrypt.genSalt(10, (err, salt) => {
         if (err) return reject(err);
@@ -44,15 +44,15 @@ let user = (sequelize, DataTypes) => {
         });
       });
     });
-  }
+  };
 
-  function generateAuthToken(user) {
+  generateAuthToken = (user) => {
     return new Promise ((resolve, reject) => {
       let token = jwt.sign({id: user.id}, process.env.TOKEN_SECRET);
       if (!token) return reject();
       return resolve(token);
     });
-  }
+  };
 
   User.beforeCreate((user, options) => {
     return hashPassword(user.password)
@@ -69,6 +69,14 @@ let user = (sequelize, DataTypes) => {
       if (err) console.log(err);
     });
   });
+
+  User.Instance.prototype.isValidPassword = async function(newPassword) {
+    try {
+      return await bcrypt.compare(newPassword, this.password);
+    } catch(error) {
+      throw new Error(error);
+    }
+  }
 
   User.findByToken = function (receivedToken) {
     let User = this;
